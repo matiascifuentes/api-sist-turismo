@@ -2,7 +2,7 @@ from flask import Flask
 from flask import jsonify
 from config import config
 from models import db
-from models import Hotel
+from models import Hotel, Restaurant
 
 def create_app(enviroment):
     app = Flask(__name__)
@@ -21,6 +21,11 @@ app = create_app(enviroment)
 def get_hotels():
     hotels = [hotel.json() for hotel in Hotel.query.all()]
     return jsonify({'hotels': hotels })
+
+@app.route('/api/v1/restaurants', methods=['GET'])
+def get_restaurants():
+    restaurants = [restaurant.json() for restaurant in Restaurant.query.all()]
+    return jsonify({'restaurants': restaurants })
 
 if __name__ == '__main__':
     app.run(debug=True)
