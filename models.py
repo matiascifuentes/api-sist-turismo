@@ -6,8 +6,9 @@ db = SQLAlchemy()
 class Hotel(db.Model):
     __tablename__ = 'hotel'
 
+    cod_hotel = db.Column(db.String(20),primary_key=True)
     nombre = db.Column(db.String(200),nullable=False)
-    url = db.Column(db.String(200),primary_key=True)
+    url = db.Column(db.String(200),nullable=True)
     descripcion = db.Column(db.String(500))
     ciudad = db.Column(db.String(50))
     direccion = db.Column(db.String(200))
@@ -17,6 +18,7 @@ class Hotel(db.Model):
 
     def json(self):
         return {
+            'cod_hotel': self.cod_hotel,
             'nombre': self.nombre,
             'url': self.url,
             'descripcion': self.descripcion,
@@ -30,6 +32,7 @@ class Hotel(db.Model):
 class Restaurant(db.Model):
     __tablename__ = 'restaurant'
 
+    cod_restaurant = db.Column(db.String(20),primary_key=True)
     nombre = db.Column(db.String(200),nullable=False)
     url = db.Column(db.String(200),primary_key=True)
     ciudad = db.Column(db.String(50))
@@ -41,6 +44,7 @@ class Restaurant(db.Model):
 
     def json(self):
         return {
+            'cod_restaurant': self.cod_restaurant,
             'nombre': self.nombre,
             'url': self.url,
             'ciudad': self.ciudad,
