@@ -8,7 +8,7 @@ class Hotel(db.Model):
 
     cod_hotel = db.Column(db.String(20),primary_key=True)
     nombre = db.Column(db.String(200),nullable=False)
-    url = db.Column(db.String(200),nullable=True)
+    url = db.Column(db.String(200),nullable=False)
     descripcion = db.Column(db.String(500))
     ciudad = db.Column(db.String(50))
     direccion = db.Column(db.String(200))
@@ -34,7 +34,7 @@ class Restaurant(db.Model):
 
     cod_restaurant = db.Column(db.String(20),primary_key=True)
     nombre = db.Column(db.String(200),nullable=False)
-    url = db.Column(db.String(200),primary_key=True)
+    url = db.Column(db.String(200),nullable=False)
     ciudad = db.Column(db.String(50))
     direccion = db.Column(db.String(200))
     num_valoracion = db.Column(db.String(50))
