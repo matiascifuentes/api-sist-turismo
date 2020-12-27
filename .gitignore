@@ -1,4 +1,5 @@
 __pycache__/
+static/
 hoteles_visitados.txt
 restaurantes_visitados.txt
 geckodriver.log

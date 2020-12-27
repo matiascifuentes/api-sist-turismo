@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, render_template
 from flask import jsonify
 from config import config
 from models import db
@@ -16,6 +16,10 @@ def create_app(enviroment):
 enviroment = config['development']
 app = create_app(enviroment)
 
+@app.route('/img/<filename>')
+def show_img(filename):
+    filename = 'http://127.0.0.1:5000/static/images/' + filename
+    return render_template('img.html', filename=filename)
 
 @app.route('/api/v1/hotels', methods=['GET'])
 def get_hotels():
