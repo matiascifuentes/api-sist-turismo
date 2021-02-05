@@ -35,12 +35,12 @@ def get_hotel(cod_hotel):
 
 @app.route('/api/v1/restaurants', methods=['GET'])
 def get_restaurants():
-    restaurants = [restaurant.json() for restaurant in Restaurant.query.all()]
+    restaurants = [restaurant.json() for restaurant in Servicio.query.join(Restaurant).all()]
     return jsonify({'restaurants': restaurants })
 
 @app.route('/api/v1/restaurants/<cod_restaurant>', methods=['GET'])
 def get_restaurant(cod_restaurant):
-    restaurant = Restaurant.query.filter_by(cod_restaurant=cod_restaurant).first()
+    restaurant = Servicio.query.filter_by(id_servicio=cod_restaurant).first()
     if restaurant is None:
         return jsonify({'message': 'El restaurant no existe'}), 404
     return jsonify({'restaurant': restaurant.json() })
