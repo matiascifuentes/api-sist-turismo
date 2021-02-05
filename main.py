@@ -50,5 +50,12 @@ def get_atractions():
     atractions = [atraccion.json() for atraccion in Servicio.query.join(Atraccion).all()]
     return jsonify({'atractions': atractions })
 
+@app.route('/api/v1/atractions/<cod_atraction>', methods=['GET'])
+def get_atraction(cod_atraction):
+    atraccion = Servicio.query.filter_by(id_servicio=cod_atraction).first()
+    if atraccion is None:
+        return jsonify({'message': 'La atracción no existe'}), 404
+    return jsonify({'atraccion': atraccion.json() })
+
 if __name__ == '__main__':
     app.run(debug=True)
