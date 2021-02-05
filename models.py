@@ -103,6 +103,21 @@ class Lista(db.Model):
             'fecha': self.fecha
         }
 
+class DetalleLista(db.Model):
+    __tablename__ = 'detalle_lista'
+
+    id_lista = db.Column(db.Integer,db.ForeignKey('lista.id_lista'),primary_key=True)
+    id_servicio = db.Column(db.String(20),db.ForeignKey('servicio.id_servicio'),primary_key=True)
+
+    listaD = db.relationship('Lista',backref='listaD')
+    servicioD = db.relationship('Servicio',backref='servicioD')
+
+    def json(self):
+        return {
+            'id_lista': self.id_lista,
+            'id_servicio': self.id_servicio
+        }
+
 class Sesion(db.Model):
     __tablename__ = 'sesion'
 
