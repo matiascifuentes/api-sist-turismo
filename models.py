@@ -35,7 +35,7 @@ class Hotel(db.Model):
 
     id_servicio = db.Column(db.String(20),db.ForeignKey('servicio.id_servicio'),primary_key=True)
 
-    servicio = db.relationship('Servicio',backref='servicio')
+    servicioH = db.relationship('Servicio',backref='servicioH')
 
     def json(self):
         return {
@@ -47,7 +47,7 @@ class Restaurant(db.Model):
 
     id_servicio = db.Column(db.String(20),db.ForeignKey('servicio.id_servicio'),primary_key=True)
 
-    servicio = db.relationship('Servicio',backref='servicio')
+    servicioR = db.relationship('Servicio',backref='servicioR')
 
     def json(self):
         return {
