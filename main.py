@@ -28,7 +28,7 @@ def get_hotels():
 
 @app.route('/api/v1/hotels/<cod_hotel>', methods=['GET'])
 def get_hotel(cod_hotel):
-    hotel = Hotel.query.filter_by(cod_hotel=cod_hotel).first()
+    hotel = Servicio.query.filter_by(id_servicio=cod_hotel).first()
     if hotel is None:
         return jsonify({'message': 'El hotel no existe'}), 404
     return jsonify({'hotel': hotel.json() })
