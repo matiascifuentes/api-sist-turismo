@@ -25,6 +25,22 @@ class Usuario(db.Model):
             'fecha_nacimiento': self.fecha_nacimiento
         }
 
+class Sesion(db.Model):
+    __tablename__ = 'sesion'
+
+    id_sesion = db.Column(db.Integer,primary_key=True)
+    id_usuario = db.Column(db.Integer,db.ForeignKey('usuario.id_usuario'),nullable=False)
+    fecha = db.Column(db.TIMESTAMP,nullable=False)
+
+    usuarioS = db.relationship('Usuario',backref='usuarioS')
+
+    def json(self):
+        return {
+            'id_sesion': self.id_sesion,
+            'id_usuario': self.id_usuario,
+            'fecha': self.fecha
+        }
+
 class Servicio(db.Model):
     __tablename__ = 'servicio'
 
