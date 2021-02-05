@@ -2,7 +2,7 @@ from flask import Flask, render_template
 from flask import jsonify
 from config import config
 from models import db
-from models import Servicio, Hotel, Restaurant
+from models import Servicio, Hotel, Restaurant, Atraccion
 
 def create_app(enviroment):
     app = Flask(__name__)
@@ -44,6 +44,11 @@ def get_restaurant(cod_restaurant):
     if restaurant is None:
         return jsonify({'message': 'El restaurant no existe'}), 404
     return jsonify({'restaurant': restaurant.json() })
+
+@app.route('/api/v1/atractions', methods=['GET'])
+def get_atractions():
+    atractions = [atraccion.json() for atraccion in Servicio.query.join(Atraccion).all()]
+    return jsonify({'atractions': atractions })
 
 if __name__ == '__main__':
     app.run(debug=True)
