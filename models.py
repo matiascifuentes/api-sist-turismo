@@ -33,27 +33,11 @@ class Servicio(db.Model):
 class Hotel(db.Model):
     __tablename__ = 'hotel'
 
-    cod_hotel = db.Column(db.String(20),primary_key=True)
-    nombre = db.Column(db.String(200),nullable=False)
-    url = db.Column(db.String(200),nullable=False)
-    descripcion = db.Column(db.String(500))
-    ciudad = db.Column(db.String(50))
-    direccion = db.Column(db.String(200))
-    num_valoracion = db.Column(db.String(50))
-    valoracion = db.Column(db.String(50))
-    url_mapa = db.Column(db.String(500))
+    id_servicio = db.Column(db.String(20),primary_key=True,ForeignKey(servicio.id_servicio))
 
     def json(self):
         return {
-            'cod_hotel': self.cod_hotel,
-            'nombre': self.nombre,
-            'url': self.url,
-            'descripcion': self.descripcion,
-            'ciudad': self.ciudad,
-            'direccion': self.direccion,
-            'num_valoracion': self.num_valoracion,
-            'valoracion': self.valoracion,
-            'url_mapa': self.url_mapa
+            'id_servicio': self.id_servicio
         }
 
 class Restaurant(db.Model):
