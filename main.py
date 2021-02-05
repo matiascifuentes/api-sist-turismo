@@ -2,7 +2,7 @@ from flask import Flask, render_template
 from flask import jsonify
 from config import config
 from models import db
-from models import Hotel, Restaurant
+from models import Servicio, Hotel, Restaurant
 
 def create_app(enviroment):
     app = Flask(__name__)
@@ -23,7 +23,7 @@ def show_img(folder,filename):
 
 @app.route('/api/v1/hotels', methods=['GET'])
 def get_hotels():
-    hotels = [hotel.json() for hotel in Hotel.query.all()]
+    hotels = [hotel.json() for hotel in Servicio.query.join(Hotel).all()]
     return jsonify({'hotels': hotels })
 
 @app.route('/api/v1/hotels/<cod_hotel>', methods=['GET'])
