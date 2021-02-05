@@ -3,6 +3,28 @@ from flask_sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy()
 
+class Usuario(db.Model):
+    __tablename__ = 'usuario'
+
+    id_usuario = db.Column(db.Integer,primary_key=True)
+    correo = db.Column(db.String(320),nullable=False)
+    password = db.Column(db.String(200),nullable=False)
+    nombre = db.Column(db.String(50))
+    apellido = db.Column(db.String(50))
+    sexo = db.Column(db.String(1))
+    fecha_nacimiento = db.Column(db.Date)
+
+    def json(self):
+        return {
+            'id_usuario': self.id_usuario,
+            'correo': self.correo,
+            'password': self.password,
+            'nombre': self.nombre,
+            'apellido': self.apellido,
+            'sexo': self.sexo,
+            'fecha_nacimiento': self.fecha_nacimiento
+        }
+
 class Servicio(db.Model):
     __tablename__ = 'servicio'
 
@@ -28,7 +50,6 @@ class Servicio(db.Model):
             'num_valoracion': self.num_valoracion,
             'url_mapa': self.url_mapa
         }
-
 
 class Hotel(db.Model):
     __tablename__ = 'hotel'
