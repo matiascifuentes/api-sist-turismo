@@ -53,4 +53,15 @@ class Restaurant(db.Model):
         return {
             'id_servicio': self.id_servicio
         }
-        
+
+class Atraccion(db.Model):
+    __tablename__ = 'atraccion'
+
+    id_servicio = db.Column(db.String(20),db.ForeignKey('servicio.id_servicio'),primary_key=True)
+
+    servicioA = db.relationship('Servicio',backref='servicioA')
+
+    def json(self):
+        return {
+            'id_servicio': self.id_servicio
+        }
