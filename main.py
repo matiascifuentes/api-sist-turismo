@@ -74,5 +74,12 @@ def get_details():
     details = [detalle.json() for detalle in DetalleLista.query.all()]
     return jsonify({'details': details })
 
+@app.route('/api/v1/details/<cod_lista>', methods=['GET'])
+def get_detail(cod_lista):
+    detalle = DetalleLista.query.filter_by(id_lista=cod_lista).first()
+    if detalle is None:
+        return jsonify({'message': 'La lista no existe'}), 404
+    return jsonify({'detalle': detalle.json() })
+
 if __name__ == '__main__':
     app.run(debug=True)
