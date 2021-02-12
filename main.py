@@ -62,5 +62,12 @@ def get_lists():
     lists = [lista.json() for lista in Lista.query.all()]
     return jsonify({'lists': lists })
 
+@app.route('/api/v1/lists/<cod_lista>', methods=['GET'])
+def get_list(cod_lista):
+    lista = Lista.query.filter_by(id_lista=cod_lista).first()
+    if lista is None:
+        return jsonify({'message': 'La lista no existe'}), 404
+    return jsonify({'lista': lista.json() })
+
 if __name__ == '__main__':
     app.run(debug=True)
