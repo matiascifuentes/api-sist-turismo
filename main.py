@@ -2,7 +2,7 @@ from flask import Flask, render_template
 from flask import jsonify
 from config import config
 from models import db
-from models import Servicio, Hotel, Restaurant, Atraccion, Lista, DetalleLista, Sesion
+from models import Servicio, Hotel, Restaurant, Atraccion, Lista, DetalleLista, Sesion, PagVisitada
 
 def create_app(enviroment):
     app = Flask(__name__)
@@ -92,6 +92,11 @@ def get_sesion(cod_sesion):
     if sesion is None:
         return jsonify({'message': 'La sesión no existe'}), 404
     return jsonify({'sesion': sesion.json() })
+
+@app.route('/api/v1/pages', methods=['GET'])
+def get_pages():
+    pages = [pagina.json() for pagina in PagVisitada.query.all()]
+    return jsonify({'pages': pages })
 
 if __name__ == '__main__':
     app.run(debug=True)
