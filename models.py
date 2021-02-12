@@ -143,7 +143,7 @@ class PagVisitada(db.Model):
     tiempo = db.Column(db.Time,nullable=False)
 
     sesionP = db.relationship('Sesion',backref='sesionP')
-    usuarioP = db.relationship('Usuario',backref='usuarioP')
+    servicioP = db.relationship('Servicio',backref='servicioP')
 
     def json(self):
         return {
