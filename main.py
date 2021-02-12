@@ -86,5 +86,12 @@ def get_sesions():
     sesions = [sesion.json() for sesion in Sesion.query.all()]
     return jsonify({'sesions': sesions })
 
+@app.route('/api/v1/sesions/<cod_sesion>', methods=['GET'])
+def get_sesion(cod_sesion):
+    sesion = Sesion.query.filter_by(id_sesion=cod_sesion).first()
+    if sesion is None:
+        return jsonify({'message': 'La sesión no existe'}), 404
+    return jsonify({'sesion': sesion.json() })
+
 if __name__ == '__main__':
     app.run(debug=True)
