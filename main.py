@@ -2,7 +2,7 @@ from flask import Flask, render_template
 from flask import jsonify
 from config import config
 from models import db
-from models import Servicio, Hotel, Restaurant, Atraccion, Lista
+from models import Servicio, Hotel, Restaurant, Atraccion, Lista, DetalleLista
 
 def create_app(enviroment):
     app = Flask(__name__)
@@ -68,6 +68,11 @@ def get_list(cod_lista):
     if lista is None:
         return jsonify({'message': 'La lista no existe'}), 404
     return jsonify({'lista': lista.json() })
+
+@app.route('/api/v1/details', methods=['GET'])
+def get_details():
+    details = [detalle.json() for detalle in DetalleLista.query.all()]
+    return jsonify({'details': details })
 
 if __name__ == '__main__':
     app.run(debug=True)
