@@ -17,4 +17,15 @@ class HistoricoListas(db.Model):
 
 
 class HistoricoSesiones(db.Model):
-    pass
+    __tablename__ = 'historico_sesiones'
+
+    id_sesion = db.Column(db.Integer,primary_key=True)
+    id_servicio = db.Column(db.String(20),primary_key=True)
+    id_usuario = db.Column(db.Integer,nullable=False)
+
+    def json(self):
+        return {
+            'id_sesion': self.id_sesion,
+            'id_servicio': self.id_servicio,
+            'id_usuario': self.id_usuario
+        }
