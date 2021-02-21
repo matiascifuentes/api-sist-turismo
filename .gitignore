@@ -3,3 +3,4 @@ static/
 hoteles_visitados.txt
 restaurantes_visitados.txt
 geckodriver.log
+models/__pycache__/
