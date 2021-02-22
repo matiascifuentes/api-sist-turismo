@@ -24,5 +24,13 @@ def save_rules_to_file(rules):
 	with open('rules.json', 'w') as file:
 		json.dump(data, file)
 
-
-
+def get_rules_from_file():
+	rules = []
+	try:
+		with open('rules.json') as file:
+			data = json.load(file)
+			for rule in data['rules']:
+				rules.append(Rule(rule['lhs'],rule['rhs'],rule['support'],rule['confidence'],rule['lift']))
+		return True, rules
+	except:
+		return False, rules
