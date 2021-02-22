@@ -4,3 +4,4 @@ hoteles_visitados.txt
 restaurantes_visitados.txt
 geckodriver.log
 models/__pycache__/
+recommendation_system/__pycache__/
