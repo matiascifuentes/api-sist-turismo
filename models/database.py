@@ -5,6 +5,7 @@ db = SQLAlchemy()
 
 class Usuario(db.Model):
     __tablename__ = 'usuario'
+    __bind_key__ = 'db_turismo'
 
     id_usuario = db.Column(db.Integer,primary_key=True)
     correo = db.Column(db.String(320),nullable=False)
@@ -27,6 +28,7 @@ class Usuario(db.Model):
 
 class Servicio(db.Model):
     __tablename__ = 'servicio'
+    __bind_key__ = 'db_turismo'
 
     id_servicio = db.Column(db.String(20),primary_key=True)
     nombre = db.Column(db.String(200),nullable=False)
@@ -53,6 +55,7 @@ class Servicio(db.Model):
 
 class Hotel(db.Model):
     __tablename__ = 'hotel'
+    __bind_key__ = 'db_turismo'
 
     id_servicio = db.Column(db.String(20),db.ForeignKey('servicio.id_servicio'),primary_key=True)
 
@@ -65,6 +68,7 @@ class Hotel(db.Model):
 
 class Restaurant(db.Model):
     __tablename__ = 'restaurant'
+    __bind_key__ = 'db_turismo'
 
     id_servicio = db.Column(db.String(20),db.ForeignKey('servicio.id_servicio'),primary_key=True)
 
@@ -77,6 +81,7 @@ class Restaurant(db.Model):
 
 class Atraccion(db.Model):
     __tablename__ = 'atraccion'
+    __bind_key__ = 'db_turismo'
 
     id_servicio = db.Column(db.String(20),db.ForeignKey('servicio.id_servicio'),primary_key=True)
 
@@ -89,6 +94,7 @@ class Atraccion(db.Model):
 
 class Lista(db.Model):
     __tablename__ = 'lista'
+    __bind_key__ = 'db_turismo'
 
     id_lista = db.Column(db.Integer,primary_key=True)
     id_usuario = db.Column(db.Integer,db.ForeignKey('usuario.id_usuario'),nullable=False)
@@ -105,6 +111,7 @@ class Lista(db.Model):
 
 class DetalleLista(db.Model):
     __tablename__ = 'detalle_lista'
+    __bind_key__ = 'db_turismo'
 
     id_lista = db.Column(db.Integer,db.ForeignKey('lista.id_lista'),primary_key=True)
     id_servicio = db.Column(db.String(20),db.ForeignKey('servicio.id_servicio'),primary_key=True)
@@ -120,6 +127,7 @@ class DetalleLista(db.Model):
 
 class Sesion(db.Model):
     __tablename__ = 'sesion'
+    __bind_key__ = 'db_turismo'
 
     id_sesion = db.Column(db.Integer,primary_key=True)
     id_usuario = db.Column(db.Integer,db.ForeignKey('usuario.id_usuario'),nullable=False)
@@ -136,6 +144,7 @@ class Sesion(db.Model):
 
 class PagVisitada(db.Model):
     __tablename__ = 'pag_visitada'
+    __bind_key__ = 'db_turismo'
 
     id = db.Column(db.Integer,primary_key=True)
     id_sesion = db.Column(db.Integer,db.ForeignKey('sesion.id_sesion'),nullable=False)
