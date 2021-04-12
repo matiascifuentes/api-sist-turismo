@@ -1,8 +1,10 @@
 from flask import Flask, render_template
 from flask import jsonify
+from flask import request
 from config import config
 from models.database import db
 from models.database import Servicio, Hotel, Restaurant, Atraccion, Lista, DetalleLista, Sesion, PagVisitada
+from datetime import datetime
 
 def create_app(enviroment):
     app = Flask(__name__)
@@ -68,6 +70,27 @@ def get_list(cod_lista):
     if lista is None:
         return jsonify({'message': 'La lista no existe'}), 404
     return jsonify({'lista': lista.json() })
+
+@app.route('/api/v1/lists', methods=['POST'])
+def add_list():
+    if not request.json or not 'id_usuario' in request.json or not 'servicios' in request.json:
+        return jsonify({'error':'error de datos'}),400
+    id_usuario = request.json['id_usuario']
+    servicios = request.json['servicios']
+    now = datetime.now()
+    fecha = now.strftime("%d-%m-%Y %H:%M:%S")
+    lista = Lista(id_usuario=id_usuario,fecha=fecha)
+    db.session.add(lista)
+    db.session.commit()
+    id_lista = lista.json()['id_lista']
+    if id_lista:
+        for servicio in servicios:
+            detalle = DetalleLista(id_lista=id_lista, id_servicio=servicio['id_servicio'])
+            db.session.add(detalle)
+            db.session.commit()
+        return jsonify({'success': id_lista})
+    return jsonify({'error': 'error'})
+   
 
 @app.route('/api/v1/details', methods=['GET'])
 def get_details():
