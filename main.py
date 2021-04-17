@@ -3,7 +3,7 @@ from flask import jsonify
 from flask import request
 from config import config
 from models.database import db
-from models.database import Servicio, Hotel, Restaurant, Atraccion, Lista, DetalleLista, Sesion, PagVisitada
+from models.database import Servicio, Hotel, Restaurant, Atraccion, Lista, DetalleLista, Sesion, PagVisitada, Usuario
 from datetime import datetime
 
 def create_app(enviroment):
@@ -120,6 +120,20 @@ def get_sesion(cod_sesion):
 def get_pages():
     pages = [pagina.json() for pagina in PagVisitada.query.all()]
     return jsonify({'pages': pages })
+
+@app.route('/api/v1/users/<correo>/byemail', methods=['GET'])
+def get_user_email(correo):
+    user = Usuario.query.filter_by(correo=correo).first()
+    if user is None:
+        return jsonify({'message': 'El usuario no existe'})
+    return jsonify({'user': user.json() })
+
+@app.route('/api/v1/users/<id>/byid', methods=['GET'])
+def get_user_id(id):
+    user = Usuario.query.filter_by(id_usuario=id).first()
+    if user is None:
+        return jsonify({'message': 'El usuario no existe'})
+    return jsonify({'user': user.json() })
 
 if __name__ == '__main__':
     app.run(debug=True)
