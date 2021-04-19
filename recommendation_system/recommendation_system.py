@@ -1,5 +1,5 @@
 from efficient_apriori import apriori
-from rule import Rule
+from recommendation_system.rule import Rule
 import json
 
 def generate_association_rules(transactions, min_support, min_confidence):
