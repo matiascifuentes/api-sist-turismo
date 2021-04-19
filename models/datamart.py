@@ -8,7 +8,7 @@ class HistoricoListas(db.Model):
     __bind_key__ = 'dm_turismo'
 
     id_lista = db.Column(db.Integer,primary_key=True)
-    id_servicio = db.Column(db.String(20)primary_key=True)
+    id_servicio = db.Column(db.String(20),primary_key=True)
 
     def json(self):
         return {
