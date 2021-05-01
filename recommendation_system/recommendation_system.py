@@ -11,8 +11,8 @@ def recommendations(service, rules, max_results):
 	for rule in rules:
 		if len(result) == max_results:
 			break
-		if rule.lhs[0] == service:
-			result.append(rule.rhs[0])
+		if rule.lhs == service:
+			result.append(rule.rhs)
 	return result
 
 def save_rules_to_file(rules):
