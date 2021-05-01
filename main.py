@@ -141,7 +141,19 @@ def get_user_id(id):
 def get_recommendations(service_id):
     success, rules = get_rules_from_file()
     if(success):
-        result = recommendations(service_id,rules,10)
+        result = []
+        services = recommendations(service_id,rules,10)
+        for service in services:
+            if(Hotel.query.filter_by(id_servicio=service).first()):
+                tipo = 'hotels'
+            elif(Restaurant.query.filter_by(id_servicio=service).first()):
+                tipo = 'restaurants'
+            elif(Atraccion.query.filter_by(id_servicio=service).first()):
+                tipo = 'atractions'
+            else:
+                tipo = None
+            if tipo:
+                result.append({'id':service,'tipo':tipo})
         return jsonify({'recommendations': result })
     return jsonify({'error': 'no se encontraron reglas'})
 
