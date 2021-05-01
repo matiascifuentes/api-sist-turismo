@@ -16,6 +16,9 @@ def recommendations(service, rules, max_results):
 	return result
 
 def save_rules_to_file(rules):
+	min_lift = 1
+	rules = filter(lambda rule: rule.lift >= min_lift, rules)
+	rules = sorted(rules, key=lambda rule: rule.lift)
 	data = {}
 	data['rules'] = []
 	for rule in rules:
