@@ -5,6 +5,8 @@ from config import config
 from models.database import db
 from models.database import Servicio, Hotel, Restaurant, Atraccion, Lista, DetalleLista, Sesion, PagVisitada, Usuario
 from datetime import datetime
+from recommendation_system.utils import get_itemset_historico_listas
+from recommendation_system.recommendation_system import generate_association_rules, recommendations, save_rules_to_file, get_rules_from_file
 
 def create_app(enviroment):
     app = Flask(__name__)
@@ -134,6 +136,15 @@ def get_user_id(id):
     if user is None:
         return jsonify({'message': 'El usuario no existe'})
     return jsonify({'user': user.json() })
+
+@app.route('/api/v1/recommendations/<service_id>', methods=['GET'])
+def get_recommendations(service_id):
+    success, rules = get_rules_from_file()
+    if(success):
+        result = recommendations(service_id,rules,10)
+        return jsonify({'recommendations': result })
+    return jsonify({'error': 'no se encontraron reglas'})
+
 
 if __name__ == '__main__':
     app.run(debug=True)
