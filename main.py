@@ -134,6 +134,15 @@ def get_pages():
     pages = [pagina.json() for pagina in PagVisitada.query.all()]
     return jsonify({'pages': pages })
 
+@app.route('/api/v1/pages', methods=['POST'])
+def set_pages():
+    if not request.json or not 'id_sesion' in request.json or not 'id_servicio' in request.json:
+        return jsonify({'error':'error de datos'}),400
+    pagVisitada = PagVisitada(id_sesion=request.json['id_sesion'],id_servicio=request.json['id_servicio'])
+    db.session.add(pagVisitada)
+    db.session.commit()
+    return jsonify({'success': pagVisitada.json()['id'] })
+
 @app.route('/api/v1/users/<correo>/byemail', methods=['GET'])
 def get_user_email(correo):
     user = Usuario.query.filter_by(correo=correo).first()

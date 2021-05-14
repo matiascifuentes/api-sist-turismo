@@ -149,7 +149,6 @@ class PagVisitada(db.Model):
     id = db.Column(db.Integer,primary_key=True)
     id_sesion = db.Column(db.Integer,db.ForeignKey('sesion.id_sesion'),nullable=False)
     id_servicio = db.Column(db.String(20),db.ForeignKey('servicio.id_servicio'),nullable=False)
-    tiempo = db.Column(db.Time,nullable=False)
 
     sesionP = db.relationship('Sesion',backref='sesionP')
     servicioP = db.relationship('Servicio',backref='servicioP')
@@ -158,7 +157,6 @@ class PagVisitada(db.Model):
         return {
             'id': self.id,
             'id_sesion': self.id_sesion,
-            'id_servicio': self.id_servicio,
-            'tiempo': self.tiempo
+            'id_servicio': self.id_servicio
         }
 
