@@ -111,6 +111,17 @@ def get_sesions():
     sesions = [sesion.json() for sesion in Sesion.query.all()]
     return jsonify({'sesions': sesions })
 
+@app.route('/api/v1/sesions', methods=['POST'])
+def set_sesion():
+    if not request.json or not 'id_usuario' in request.json:
+        return jsonify({'error':'error de datos'}),400
+    now = datetime.now()
+    fecha = now.strftime("%d-%m-%Y %H:%M:%S")
+    sesion = Sesion(id_usuario=request.json['id_usuario'],fecha=fecha)
+    db.session.add(sesion)
+    db.session.commit()
+    return jsonify({'success': sesion.json()['id_sesion'] })
+
 @app.route('/api/v1/sesions/<cod_sesion>', methods=['GET'])
 def get_sesion(cod_sesion):
     sesion = Sesion.query.filter_by(id_sesion=cod_sesion).first()
