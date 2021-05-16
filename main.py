@@ -6,7 +6,7 @@ from models.database import db
 from models.database import Servicio, Hotel, Restaurant, Atraccion, Lista, DetalleLista, Sesion, PagVisitada, Usuario
 from datetime import datetime
 from recommendation_system.utils import get_itemset_historico_listas
-from recommendation_system.recommendation_system import generate_association_rules, recommendations, save_rules_to_file, get_rules_from_file
+from recommendation_system.recommendation_system import generate_association_rules, recommendations, save_rules_to_file, get_rules_from_file, get_rules_from_sessions
 
 def create_app(enviroment):
     app = Flask(__name__)
@@ -177,6 +177,25 @@ def get_recommendations(service_id):
         return jsonify({'recommendations': result })
     return jsonify({'error': 'no se encontraron reglas'})
 
+@app.route('/api/v1/recommendations/<service_id>/<user_id>', methods=['GET'])
+def get_recommendations_from_sessions(service_id,user_id):
+    success, rules = get_rules_from_sessions(user_id)
+    if(success):
+        result = []
+        services = recommendations(service_id,rules,10)
+        for service in services:
+            if(Hotel.query.filter_by(id_servicio=service).first()):
+                tipo = 'hotels'
+            elif(Restaurant.query.filter_by(id_servicio=service).first()):
+                tipo = 'restaurants'
+            elif(Atraccion.query.filter_by(id_servicio=service).first()):
+                tipo = 'atractions'
+            else:
+                tipo = None
+            if tipo:
+                result.append({'id':service,'tipo':tipo})
+        return jsonify({'recommendations': result })
+    return jsonify({'error': 'no se encontraron reglas'})
 
 if __name__ == '__main__':
     app.run(debug=True)
