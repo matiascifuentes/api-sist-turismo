@@ -160,9 +160,9 @@ def get_user_id(id):
 @app.route('/api/v1/recommendations/<service_id>', methods=['GET'])
 def get_recommendations(service_id):
     success, rules = get_rules_from_file()
+    result = []
     if(success):
-        result = []
-        services = recommendations(service_id,rules,10)
+        services = recommendations(service_id,rules,5)
         for service in services:
             if(Hotel.query.filter_by(id_servicio=service).first()):
                 tipo = 'hotels'
@@ -173,16 +173,18 @@ def get_recommendations(service_id):
             else:
                 tipo = None
             if tipo:
-                result.append({'id':service,'tipo':tipo})
-        return jsonify({'recommendations': result })
-    return jsonify({'error': 'no se encontraron reglas'})
+                serviceData = Servicio.query.filter_by(id_servicio=service).first()
+                if serviceData:
+                    serviceData = serviceData.json()
+                    result.append({'id':service,'tipo':tipo,'nombre':serviceData['nombre'],'ciudad':serviceData['ciudad']})
+    return jsonify({'recommendations': result })
 
 @app.route('/api/v1/recommendations/<service_id>/<user_id>', methods=['GET'])
 def get_recommendations_from_sessions(service_id,user_id):
     success, rules = get_rules_from_sessions(user_id)
+    result = []
     if(success):
-        result = []
-        services = recommendations(service_id,rules,10)
+        services = recommendations(service_id,rules,5)
         for service in services:
             if(Hotel.query.filter_by(id_servicio=service).first()):
                 tipo = 'hotels'
@@ -193,9 +195,11 @@ def get_recommendations_from_sessions(service_id,user_id):
             else:
                 tipo = None
             if tipo:
-                result.append({'id':service,'tipo':tipo})
-        return jsonify({'recommendations': result })
-    return jsonify({'error': 'no se encontraron reglas'})
+                serviceData = Servicio.query.filter_by(id_servicio=service).first()
+                if serviceData:
+                    serviceData = serviceData.json()
+                    result.append({'id':service,'tipo':tipo,'nombre':serviceData['nombre'],'ciudad':serviceData['ciudad']})
+    return jsonify({'recommendations': result})
 
 if __name__ == '__main__':
     app.run(debug=True)
