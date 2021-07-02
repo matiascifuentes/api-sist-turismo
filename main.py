@@ -157,34 +157,17 @@ def get_user_id(id):
         return jsonify({'message': 'El usuario no existe'})
     return jsonify({'user': user.json() })
 
-@app.route('/api/v1/recommendations/<service_id>', methods=['GET'])
-def get_recommendations(service_id):
-    success, rules = get_rules_from_file()
-    result = []
-    if(success):
-        services = recommendations(service_id,rules,5)
-        for service in services:
-            if(Hotel.query.filter_by(id_servicio=service).first()):
-                tipo = 'hotels'
-            elif(Restaurant.query.filter_by(id_servicio=service).first()):
-                tipo = 'restaurants'
-            elif(Atraccion.query.filter_by(id_servicio=service).first()):
-                tipo = 'atractions'
-            else:
-                tipo = None
-            if tipo:
-                serviceData = Servicio.query.filter_by(id_servicio=service).first()
-                if serviceData:
-                    serviceData = serviceData.json()
-                    result.append({'id':service,'tipo':tipo,'nombre':serviceData['nombre'],'ciudad':serviceData['ciudad']})
-    return jsonify({'recommendations': result })
-
 @app.route('/api/v1/recommendations/<service_id>/<user_id>', methods=['GET'])
-def get_recommendations_from_sessions(service_id,user_id):
+def get_recommendations(service_id,user_id):
+    max_recommendations = 5
     success, rules = get_rules_from_sessions(user_id)
     result = []
     if(success):
-        services = recommendations(service_id,rules,5)
+        services = recommendations(service_id,rules,max_recommendations)
+        if len(services) == 0:
+            success, rules = get_rules_from_file()
+            if(success):
+                services = recommendations(service_id,rules,max_recommendations)
         for service in services:
             if(Hotel.query.filter_by(id_servicio=service).first()):
                 tipo = 'hotels'
@@ -200,6 +183,16 @@ def get_recommendations_from_sessions(service_id,user_id):
                     serviceData = serviceData.json()
                     result.append({'id':service,'tipo':tipo,'nombre':serviceData['nombre'],'ciudad':serviceData['ciudad']})
     return jsonify({'recommendations': result})
+
+@app.route('/api/v1/system_rules', methods=['GET'])
+def system_rules():
+    try:
+        itemset = get_itemset_historico_listas()
+        rules = generate_association_rules(itemset,0.01,0.01)
+        save_rules_to_file(rules)
+        return jsonify({'success': 'true'})
+    except:
+        return jsonify({'success': 'false'})
 
 if __name__ == '__main__':
     app.run(debug=True)
